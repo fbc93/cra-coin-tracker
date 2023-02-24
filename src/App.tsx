@@ -1,8 +1,18 @@
+import { createGlobalStyle } from "styled-components";
+import Router from "./Router";
+
+const GlobalStyle = createGlobalStyle`
+  a {
+    color:red;
+  }
+`;
+
 function App() {
   return (
-    <div>
-
-    </div>
+    <>
+      <GlobalStyle />
+      <Router />
+    </>
   );
 }
 
