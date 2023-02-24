@@ -1,19 +1,20 @@
+import { Outlet } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
-import Router from "./Router";
+import Header from "./components/Header";
 
 const GlobalStyle = createGlobalStyle`
   a {
     color:red;
   }
 `;
-
-function App() {
+function Root() {
   return (
     <>
       <GlobalStyle />
-      <Router />
+      <Header />
+      <Outlet />
     </>
   );
 }
 
-export default App;
+export default Root;
