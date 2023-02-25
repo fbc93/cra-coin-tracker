@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import router from './Router';
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from './theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -59,15 +59,21 @@ table {
 }
 body{
   font-family: 'Source Sans Pro', sans-serif;
+  background-color: ${props => props.theme.bgColor};
+  color:${props => props.theme.textColor}
 }
 a{
   text-decoration: none;
+  color:inherit;
 }
 `;
+
 root.render(
   <React.StrictMode>
-    <GlobalStyle />
-    <RouterProvider router={router} />
+    <ThemeProvider theme={darkTheme}>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
