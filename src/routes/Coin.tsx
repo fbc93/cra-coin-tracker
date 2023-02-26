@@ -2,6 +2,29 @@ import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+const Container = styled.div`
+background-color:${props => props.theme.bgColor};
+padding:0px 20px;
+max-width:480px;
+margin:auto;
+`;
+
+const Header = styled.header`
+height: 10vh;
+display: flex;
+justify-content: center;
+align-items: center;
+`;
+
+const Title = styled.h1`
+color:${(props) => props.theme.accentColor};
+font-size:30px;
+`;
+
+const Loader = styled.div`
+text-align: center;
+`;
+
 interface RouterState {
   state: {
     state: {
@@ -68,29 +91,6 @@ interface priceData {
 }
 
 function Coin() {
-
-  const Container = styled.div`
-    background-color:${props => props.theme.bgColor};
-    padding:0px 20px;
-    max-width:480px;
-    margin:auto;
-`;
-
-  const Header = styled.header`
-    height: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-  const Title = styled.h1`
-    color:${(props) => props.theme.accentColor};
-    font-size:30px;
-`;
-
-  const Loader = styled.div`
-    text-align: center;
-`;
 
   const [loading, setLoading] = useState(true);
   const { coinId } = useParams();
