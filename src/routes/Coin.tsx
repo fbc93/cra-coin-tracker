@@ -145,7 +145,7 @@ function Coin() {
         </TabItem>
       </TabList>
 
-      <Outlet />
+      <Outlet context={{ coinId: coinId }} />
     </Container>
   );
 }
