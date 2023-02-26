@@ -3,26 +3,52 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-background-color:${props => props.theme.bgColor};
-padding:0px 20px;
-max-width:480px;
-margin:auto;
+  background-color:${props => props.theme.bgColor};
+  padding:0px 20px;
+  max-width:480px;
+  margin:auto;
 `;
 
 const Header = styled.header`
-height: 10vh;
-display: flex;
-justify-content: center;
-align-items: center;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.h1`
-color:${(props) => props.theme.accentColor};
-font-size:30px;
+  color:${(props) => props.theme.accentColor};
+  font-size:30px;
 `;
 
 const Loader = styled.div`
-text-align: center;
+  text-align: center;
+`;
+
+const Overview = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  background-color: #1e272e;
+  padding:20px 30px;
+  border-radius: 15px;
+`;
+const OverviewItem = styled.div`
+  display: flex;
+  flex-direction: column;
+
+span:first-child {
+  font-size:14px; 
+  margin-bottom: 10px;
+}
+`;
+
+const Description = styled.div`
+  margin:20px 10px;
+  font-size:16px;
+  line-height: 25px;
+  text-align: left;
 `;
 
 interface RouterState {
@@ -113,9 +139,40 @@ function Coin() {
   return (
     <Container>
       <Header>
-        <Title>{state.name}</Title>
+        <Title>{state?.name ? state.name : "Loading"}</Title>
       </Header>
-      {loading ? <Loader>Loading...</Loader> : null}
+      {loading ? (<Loader>Loading...</Loader>
+      ) : (
+        <>
+          <Overview>
+            <OverviewItem>
+              <span>RANK</span>
+              <span>{info?.rank}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>SYMBOL</span>
+              <span>{info?.symbol}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>OPEN SOURCE</span>
+              <span>{info?.open_source ? "YES" : "NO"}</span>
+            </OverviewItem>
+          </Overview>
+
+          <Description>{info?.description}</Description>
+
+          <Overview>
+            <OverviewItem>
+              <span>TOTAL SUPPLY</span>
+              <span>{priceInfo?.total_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>MAX SUPPLY</span>
+              <span>{priceInfo?.max_supply}</span>
+            </OverviewItem>
+          </Overview>
+        </>
+      )}
     </Container>
   );
 }
