@@ -1,6 +1,7 @@
-import { useLocation, useParams } from "react-router-dom";
+import { Outlet, useLocation, useMatch, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   background-color:${props => props.theme.bgColor};
@@ -51,11 +52,29 @@ const Description = styled.div`
   text-align: left;
 `;
 
+const TabList = styled.ul`
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin:20px 0;
+`;
+const TabItem = styled.li<{ isActive: boolean }>`
+  width:calc(50% - 5px);
+
+  a {
+    display: block;
+    width: 100%;
+    padding:10px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #1e272e;
+    color : ${props => props.isActive ? props.theme.accentColor : props.theme.textColor};
+  }
+`;
+
 interface RouterState {
   state: {
-    state: {
-      name: string
-    }
+    name: string
   }
 }
 
@@ -120,9 +139,11 @@ function Coin() {
 
   const [loading, setLoading] = useState(true);
   const { coinId } = useParams();
-  const { state: { state } } = useLocation() as RouterState;
+  const { state } = useLocation() as RouterState;
   const [info, setInfo] = useState<InfoData>();
   const [priceInfo, setPriceInfo] = useState<priceData>();
+  const priceMatch = useMatch(`/:coinId/information`);
+  const chartMatch = useMatch(`/:coinId/chart`);
 
   useEffect(() => {
     (async () => {
@@ -139,7 +160,7 @@ function Coin() {
   return (
     <Container>
       <Header>
-        <Title>{state?.name ? state.name : "Loading"}</Title>
+        <Title>{state?.name ? state.name : loading ? "Loading..." : info?.name}</Title>
       </Header>
       {loading ? (<Loader>Loading...</Loader>
       ) : (
@@ -173,6 +194,17 @@ function Coin() {
           </Overview>
         </>
       )}
+
+      <TabList>
+        <TabItem isActive={priceMatch !== null}>
+          <Link to="information">INFO</Link>
+        </TabItem>
+        <TabItem isActive={chartMatch !== null}>
+          <Link to="chart">CHART</Link>
+        </TabItem>
+      </TabList>
+
+      <Outlet />
     </Container>
   );
 }
