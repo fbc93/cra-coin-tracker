@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import router from './Router';
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from './theme';
+import { darkTheme } from './theme';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const GlobalStyle = createGlobalStyle`
@@ -70,10 +74,13 @@ a{
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
-      <GlobalStyle />
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={darkTheme}>
+        <GlobalStyle />
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
