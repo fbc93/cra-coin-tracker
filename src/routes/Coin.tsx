@@ -13,7 +13,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 10vh;
+  padding:5vh 0 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +36,7 @@ const Overview = styled.div`
   background-color: #1e272e;
   padding:20px 30px;
   border-radius: 15px;
+  margin-bottom:5px;
 `;
 const OverviewItem = styled.div`
   display: flex;
@@ -58,7 +59,7 @@ const TabList = styled.ul`
   display:flex;
   justify-content: space-between;
   align-items: center;
-  margin:20px 0;
+  margin:20px 0 5px;
 `;
 const TabItem = styled.li<{ isActive: boolean }>`
   width:calc(50% - 5px);
@@ -69,8 +70,8 @@ const TabItem = styled.li<{ isActive: boolean }>`
     padding:10px;
     border-radius: 10px;
     text-align: center;
-    background-color: #1e272e;
-    color : ${props => props.isActive ? props.theme.accentColor : props.theme.textColor};
+    background-color: #57606f;
+    color : ${props => props.isActive ? props.theme.accentColor : "#999999"};
   }
 `;
 
@@ -126,37 +127,53 @@ function Coin() {
         </Helmet>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
-      <HomeLink>
-        <Link to={"/"}>BACK TO COIN LIST</Link>
-      </HomeLink>
+
       {loading ? (<Loader>Loading...</Loader>
       ) : (
         <>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
-              <span>RANK</span>
+              <span>순위</span>
               <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>SYMBOL</span>
+              <span>심볼</span>
               <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>PRICE</span>
+              <span>현재 가격</span>
               <span>$ {tickersData?.quotes.USD.price}</span>
             </OverviewItem>
           </Overview>
 
-          <Description>{infoData?.description}</Description>
-
           <Overview>
             <OverviewItem>
-              <span>TOTAL SUPPLY</span>
+              <span>총 공급량</span>
               <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>MAX SUPPLY</span>
+              <span>최대 발행수량</span>
               <span>{tickersData?.max_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>시가총액</span>
+              <span>{tickersData?.quotes.USD.market_cap}</span>
+            </OverviewItem>
+          </Overview>
+
+          <Overview>
+            <OverviewItem>
+              <span>유통량</span>
+              <span>{tickersData?.circulating_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>거래량(24h)</span>
+              <span>{tickersData?.circulating_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>거래량(24h) 변동</span>
+              <span>{tickersData?.quotes.USD.volume_24h_change_24h} %</span>
             </OverviewItem>
           </Overview>
         </>
@@ -164,14 +181,18 @@ function Coin() {
 
       <TabList>
         <TabItem isActive={priceMatch !== null}>
-          <Link to="information">INFO</Link>
+          <Link to="information">{infoData?.symbol} 정보</Link>
         </TabItem>
         <TabItem isActive={chartMatch !== null}>
-          <Link to="chart">CHART</Link>
+          <Link to="chart">차트</Link>
         </TabItem>
       </TabList>
 
       <Outlet context={{ coinId: coinId, data: tickersData }} />
+      <HomeLink>
+        <Link to={"/"}>리스트로 돌아가기</Link>
+      </HomeLink>
+
     </Container>
   );
 }
