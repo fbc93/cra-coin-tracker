@@ -74,6 +74,22 @@ const TabItem = styled.li<{ isActive: boolean }>`
   }
 `;
 
+const HomeLink = styled.div`
+  width:100%;
+  margin:0 0 20px 0;
+
+  a {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background-color:${props => props.theme.accentColor};
+    color: #1e272e;
+    padding:15px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+`;
+
 interface RouterState {
   state: {
     name: string
@@ -108,10 +124,11 @@ function Coin() {
         <Helmet>
           <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
         </Helmet>
-
-        <Link to={"/"}>뒤로</Link>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
+      <HomeLink>
+        <Link to={"/"}>BACK TO COIN LIST</Link>
+      </HomeLink>
       {loading ? (<Loader>Loading...</Loader>
       ) : (
         <>
@@ -146,15 +163,15 @@ function Coin() {
       )}
 
       <TabList>
-        <TabItem isActive={chartMatch !== null}>
-          <Link to="chart">CHART</Link>
-        </TabItem>
         <TabItem isActive={priceMatch !== null}>
           <Link to="information">INFO</Link>
         </TabItem>
+        <TabItem isActive={chartMatch !== null}>
+          <Link to="chart">CHART</Link>
+        </TabItem>
       </TabList>
 
-      <Outlet context={{ coinId: coinId }} />
+      <Outlet context={{ coinId: coinId, data: tickersData }} />
     </Container>
   );
 }
