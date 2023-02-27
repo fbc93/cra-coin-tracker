@@ -1,15 +1,15 @@
-import Root from "./Root";
 import NotFound from "./screens/NotFound";
 import { createBrowserRouter } from "react-router-dom";
 import Coin from "./routes/Coin";
 import CoinInfo from "./routes/CoinInfo";
 import ErrorComponent from "./components/ErrorComponent";
 import CoinChart from "./routes/CoinChart";
+import Coins from "./routes/Coins";
 
 const Router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <Coins />,
     errorElement: <NotFound />
   },
   {
