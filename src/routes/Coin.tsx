@@ -3,6 +3,7 @@ import { Outlet, useLocation, useMatch, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet-async";
 
 const Container = styled.div`
   background-color:${props => props.theme.bgColor};
@@ -104,6 +105,10 @@ function Coin() {
   return (
     <Container>
       <Header>
+        <Helmet>
+          <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
+        </Helmet>
+
         <Link to={"/"}>뒤로</Link>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>

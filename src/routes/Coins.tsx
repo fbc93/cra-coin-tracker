@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { Helmet } from "react-helmet-async";
 
 const Container = styled.div`
   background-color:${props => props.theme.bgColor};
@@ -79,9 +80,13 @@ function Coins() {
   return (
     <>
       <Container>
+        <Helmet>
+          <title>코인 리스트</title>
+        </Helmet>
         <Header>
           <Title>코인 리스트</Title>
         </Header>
+
         {isLoading ? (<Loader>Loading....</Loader>) : (<CoinsList>
           {
             data?.slice(0, 100).map((coin) =>

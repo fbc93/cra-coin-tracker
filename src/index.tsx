@@ -6,6 +6,7 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme } from './theme';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from "react-query/devtools";
+import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient();
 
@@ -77,7 +78,9 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={darkTheme}>
         <GlobalStyle />
-        <RouterProvider router={router} />
+        <HelmetProvider>
+          <RouterProvider router={router} />
+        </HelmetProvider>
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </QueryClientProvider>
