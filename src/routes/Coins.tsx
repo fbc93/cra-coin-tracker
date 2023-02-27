@@ -6,7 +6,7 @@ import { fetchCoins } from "../api";
 const Container = styled.div`
   background-color:${props => props.theme.bgColor};
   padding:0px 20px;
-  max-width:480px;
+  max-width:100%;
   margin:auto;
 `;
 
@@ -86,7 +86,7 @@ function Coins() {
           {
             data?.slice(0, 100).map((coin) =>
               <Coin key={`${coin.id}`}>
-                <Link to={`${coin.id}/information`} state={{
+                <Link to={`${coin.id}/chart`} state={{
                   state: {
                     name: coin.name
                   }

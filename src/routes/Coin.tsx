@@ -137,11 +137,11 @@ function Coin() {
       )}
 
       <TabList>
-        <TabItem isActive={priceMatch !== null}>
-          <Link to="information">INFO</Link>
-        </TabItem>
         <TabItem isActive={chartMatch !== null}>
           <Link to="chart">CHART</Link>
+        </TabItem>
+        <TabItem isActive={priceMatch !== null}>
+          <Link to="information">INFO</Link>
         </TabItem>
       </TabList>
 
