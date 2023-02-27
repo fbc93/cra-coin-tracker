@@ -93,7 +93,10 @@ function Coin() {
 
   const { isLoading: tickersLoading, data: tickersData } = useQuery(
     ["tickers", coinId],
-    () => fetchCoinTickers(String(coinId))
+    () => fetchCoinTickers(String(coinId)),
+    {
+      refetchInterval: 5000,
+    }
   );
 
   const loading = infoLoading || tickersLoading;
@@ -101,6 +104,7 @@ function Coin() {
   return (
     <Container>
       <Header>
+        <Link to={"/"}>뒤로</Link>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
       {loading ? (<Loader>Loading...</Loader>
@@ -116,8 +120,8 @@ function Coin() {
               <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>OPEN SOURCE</span>
-              <span>{infoData?.open_source ? "YES" : "NO"}</span>
+              <span>PRICE</span>
+              <span>$ {tickersData?.quotes.USD.price}</span>
             </OverviewItem>
           </Overview>
 
