@@ -1,9 +1,10 @@
-import { RouterProvider } from 'react-router-dom';
+import { Outlet, RouterProvider } from 'react-router-dom';
 import router from './Router';
 import { HelmetProvider } from "react-helmet-async";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { darkTheme } from './theme';
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from './theme';
 import { ReactQueryDevtools } from "react-query/devtools";
+import { useState } from 'react';
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -67,13 +68,19 @@ a{
 }
 `;
 
-function Root() {
+const ToggleMode = styled.button``;
+
+function App() {
+  const [isDark, setIsDark] = useState(false);
+  const toggleDark = () => setIsDark((current) => !current);
+
   return (
     <>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <GlobalStyle />
         <HelmetProvider>
-          <GlobalStyle />
-          <RouterProvider router={router} />
+          <ToggleMode onClick={toggleDark}>토글 light/dark mode</ToggleMode>
+          <Outlet context={{ toggleDark, isDark }} />
         </HelmetProvider>
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
@@ -81,4 +88,4 @@ function Root() {
   );
 }
 
-export default Root;
+export default App;
