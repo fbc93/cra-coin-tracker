@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { Outlet, useLocation, useMatch, useParams } from "react-router-dom";
+import { Outlet, useLocation, useMatch, useOutletContext, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet-async";
 
 const Container = styled.div`
   background-color:${props => props.theme.bgColor};
@@ -12,7 +13,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 10vh;
+  padding:5vh 0 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,6 +36,7 @@ const Overview = styled.div`
   background-color: #1e272e;
   padding:20px 30px;
   border-radius: 15px;
+  margin-bottom:5px;
 `;
 const OverviewItem = styled.div`
   display: flex;
@@ -57,7 +59,7 @@ const TabList = styled.ul`
   display:flex;
   justify-content: space-between;
   align-items: center;
-  margin:20px 0;
+  margin:20px 0 5px;
 `;
 const TabItem = styled.li<{ isActive: boolean }>`
   width:calc(50% - 5px);
@@ -68,8 +70,24 @@ const TabItem = styled.li<{ isActive: boolean }>`
     padding:10px;
     border-radius: 10px;
     text-align: center;
-    background-color: #1e272e;
-    color : ${props => props.isActive ? props.theme.accentColor : props.theme.textColor};
+    background-color: #57606f;
+    color : ${props => props.isActive ? props.theme.accentColor : "#999999"};
+  }
+`;
+
+const HomeLink = styled.div`
+  width:100%;
+  margin:0 0 20px 0;
+
+  a {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background-color:${props => props.theme.accentColor};
+    color: #1e272e;
+    padding:15px 20px;
+    border-radius: 10px;
+    font-weight: bold;
   }
 `;
 
@@ -79,9 +97,15 @@ interface RouterState {
   }
 }
 
+interface IRouterProps {
+  toggleDark: () => void;
+  isDark: boolean;
+}
+
 function Coin() {
 
   const { coinId } = useParams();
+  const { toggleDark, isDark } = useOutletContext<IRouterProps>();
   const { state } = useLocation() as RouterState;
   const priceMatch = useMatch(`/:coinId/information`);
   const chartMatch = useMatch(`/:coinId/chart`);
@@ -93,7 +117,10 @@ function Coin() {
 
   const { isLoading: tickersLoading, data: tickersData } = useQuery(
     ["tickers", coinId],
-    () => fetchCoinTickers(String(coinId))
+    () => fetchCoinTickers(String(coinId)),
+    {
+      refetchInterval: 5000,
+    }
   );
 
   const loading = infoLoading || tickersLoading;
@@ -101,36 +128,58 @@ function Coin() {
   return (
     <Container>
       <Header>
+        <Helmet>
+          <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
+        </Helmet>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
+
       {loading ? (<Loader>Loading...</Loader>
       ) : (
         <>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
-              <span>RANK</span>
+              <span>순위</span>
               <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>SYMBOL</span>
+              <span>심볼</span>
               <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>OPEN SOURCE</span>
-              <span>{infoData?.open_source ? "YES" : "NO"}</span>
+              <span>현재 가격</span>
+              <span>$ {tickersData?.quotes.USD.price}</span>
             </OverviewItem>
           </Overview>
 
-          <Description>{infoData?.description}</Description>
-
           <Overview>
             <OverviewItem>
-              <span>TOTAL SUPPLY</span>
+              <span>총 공급량</span>
               <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>MAX SUPPLY</span>
+              <span>최대 발행수량</span>
               <span>{tickersData?.max_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>시가총액</span>
+              <span>{tickersData?.quotes.USD.market_cap}</span>
+            </OverviewItem>
+          </Overview>
+
+          <Overview>
+            <OverviewItem>
+              <span>유통량</span>
+              <span>{tickersData?.circulating_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>거래량(24h)</span>
+              <span>{tickersData?.circulating_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>거래량(24h) 변동</span>
+              <span>{tickersData?.quotes.USD.volume_24h_change_24h} %</span>
             </OverviewItem>
           </Overview>
         </>
@@ -138,14 +187,18 @@ function Coin() {
 
       <TabList>
         <TabItem isActive={priceMatch !== null}>
-          <Link to="information">INFO</Link>
+          <Link to="information">{infoData?.symbol} 정보</Link>
         </TabItem>
         <TabItem isActive={chartMatch !== null}>
-          <Link to="chart">CHART</Link>
+          <Link to="chart">차트</Link>
         </TabItem>
       </TabList>
 
-      <Outlet />
+      <Outlet context={{ coinId: coinId, data: tickersData, isDark }} />
+
+      <HomeLink>
+        <Link to={"/"}>리스트로 돌아가기</Link>
+      </HomeLink>
     </Container>
   );
 }

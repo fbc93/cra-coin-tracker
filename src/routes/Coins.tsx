@@ -1,12 +1,13 @@
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { Helmet } from "react-helmet-async";
 
 const Container = styled.div`
   background-color:${props => props.theme.bgColor};
   padding:0px 20px;
-  max-width:480px;
+  max-width:100%;
   margin:auto;
 `;
 
@@ -36,6 +37,7 @@ const Coin = styled.li`
   a {
     display: block;
     font-weight: bold;
+    color:black;
   }
 
   span {
@@ -47,6 +49,9 @@ const Coin = styled.li`
 
   &:hover{
     background-color:${props => props.theme.accentColor};
+    a {
+      color:white;
+    }
   }
 `;
 
@@ -62,7 +67,6 @@ const Img = styled.img`
   top: 50%;
   transform: translateY(-50%);
 `;
-
 interface InterfaceCoin {
   id: string,
   name: string,
@@ -79,9 +83,13 @@ function Coins() {
   return (
     <>
       <Container>
+        <Helmet>
+          <title>코인 리스트</title>
+        </Helmet>
         <Header>
           <Title>코인 리스트</Title>
         </Header>
+
         {isLoading ? (<Loader>Loading....</Loader>) : (<CoinsList>
           {
             data?.slice(0, 100).map((coin) =>
