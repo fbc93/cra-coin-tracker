@@ -18,12 +18,7 @@ interface IHistorical {
   "market_cap": number
 }
 
-interface IRouterProps {
-  isDark: boolean;
-}
-
 function CoinChart() {
-  const { isDark } = useOutletContext<IRouterProps>();
   const { coinId } = useOutletContext<IcoinId>();
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
@@ -39,7 +34,7 @@ function CoinChart() {
       align: 'left'
     },
     theme: {
-      mode: isDark ? "dark" : "light",
+      mode: "dark",
     },
     chart: {
       type: 'candlestick',

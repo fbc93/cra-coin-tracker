@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Outlet, useLocation, useMatch, useOutletContext, useParams } from "react-router-dom";
+import { Outlet, useLocation, useMatch, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
@@ -97,15 +97,9 @@ interface RouterState {
   }
 }
 
-interface IRouterProps {
-  toggleDark: () => void;
-  isDark: boolean;
-}
-
 function Coin() {
 
   const { coinId } = useParams();
-  const { toggleDark, isDark } = useOutletContext<IRouterProps>();
   const { state } = useLocation() as RouterState;
   const priceMatch = useMatch(`/:coinId/information`);
   const chartMatch = useMatch(`/:coinId/chart`);
@@ -194,7 +188,7 @@ function Coin() {
         </TabItem>
       </TabList>
 
-      <Outlet context={{ coinId: coinId, data: tickersData, isDark }} />
+      <Outlet context={{ coinId: coinId, data: tickersData }} />
 
       <HomeLink>
         <Link to={"/"}>리스트로 돌아가기</Link>
