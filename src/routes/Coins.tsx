@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet-async";
@@ -37,6 +37,7 @@ const Coin = styled.li`
   a {
     display: block;
     font-weight: bold;
+    color:black;
   }
 
   span {
@@ -48,6 +49,9 @@ const Coin = styled.li`
 
   &:hover{
     background-color:${props => props.theme.accentColor};
+    a {
+      color:white;
+    }
   }
 `;
 
@@ -63,7 +67,6 @@ const Img = styled.img`
   top: 50%;
   transform: translateY(-50%);
 `;
-
 interface InterfaceCoin {
   id: string,
   name: string,
