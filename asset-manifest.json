@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/cra-coin-tracker/static/js/main.2d163c5c.js",
+    "index.html": "/cra-coin-tracker/index.html",
+    "main.2d163c5c.js.map": "/cra-coin-tracker/static/js/main.2d163c5c.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.2d163c5c.js"
+  ]
+}
