@@ -37,7 +37,7 @@ function CoinChart() {
       align: 'left'
     },
     theme: {
-      mode: isDark ? "dark" : "light",
+      mode: isDark ? "light" : "dark",
     },
     chart: {
       type: 'candlestick',

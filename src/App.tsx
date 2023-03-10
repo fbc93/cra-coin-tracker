@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import Router from "./Router";
 import { HelmetProvider } from "react-helmet-async";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from './theme';
@@ -72,12 +73,12 @@ function App() {
   const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <ThemeProvider theme={isDark ? lightTheme : darkTheme}>
         <GlobalStyle />
         <HelmetProvider>
-          <Outlet />
+          <Router />
         </HelmetProvider>
-        <ReactQueryDevtools initialIsOpen={true} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </ThemeProvider>
     </>
   );

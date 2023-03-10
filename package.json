@@ -1,5 +1,4 @@
 {
-  "homepage": "https://fbc93.github.io/cra-coin-tracker",
   "name": "cra-coin-tracker",
   "version": "0.1.0",
   "private": true,
@@ -53,5 +52,6 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
     "gh-pages": "^5.0.0"
-  }
+  },
+  "homepage": "https://fbc93.github.io/cra-coin-tracker"
 }
