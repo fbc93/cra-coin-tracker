@@ -1,10 +1,10 @@
-import { Outlet, RouterProvider } from 'react-router-dom';
-import router from './Router';
+import { Outlet } from 'react-router-dom';
 import { HelmetProvider } from "react-helmet-async";
-import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from './theme';
 import { ReactQueryDevtools } from "react-query/devtools";
-import { useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { isDarkAtom } from './atom';
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -68,19 +68,14 @@ a{
 }
 `;
 
-const ToggleMode = styled.button``;
-
 function App() {
-  const [isDark, setIsDark] = useState(false);
-  const toggleDark = () => setIsDark((current) => !current);
-
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
         <HelmetProvider>
-          <ToggleMode onClick={toggleDark}>토글 light/dark mode</ToggleMode>
-          <Outlet context={{ toggleDark, isDark }} />
+          <Outlet />
         </HelmetProvider>
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
